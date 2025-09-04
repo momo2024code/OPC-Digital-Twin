@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require("cors");
 const axios = require("axios");
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsdoc = require('swagger-jsdoc');
 
 const app = express();
 const port = 3000;
@@ -16,7 +18,66 @@ const HISTORICAL_URL = "https://archive-api.open-meteo.com/v1/archive";
 const cache = new Map();
 const CACHE_DURATION = 60000; // 1 minute cache for real-time, 1 hour for historical
 
-// Real-time weather data from Open-Meteo
+// Swagger setup
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Weather API',
+      version: '1.0.0',
+      description: 'API for fetching real-time and historical weather data from Open-Meteo',
+    },
+    servers: [
+      {
+        url: `http://localhost:${port}`,
+      },
+    ],
+  },
+  apis: [__filename], // Use current file for swagger docs
+};
+
+const specs = swaggerJsdoc(options);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
+/**
+ * @swagger
+ * /api/realtime:
+ *   get:
+ *     summary: Get real-time weather data
+ *     description: Fetch current temperature and humidity data for a specific location
+ *     parameters:
+ *       - in: query
+ *         name: latitude
+ *         schema:
+ *           type: string
+ *           default: "52.52"
+ *         description: Latitude coordinate (defaults to Berlin)
+ *       - in: query
+ *         name: longitude
+ *         schema:
+ *           type: string
+ *           default: "13.41"
+ *         description: Longitude coordinate (defaults to Berlin)
+ *     responses:
+ *       200:
+ *         description: Successful response with real-time weather data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 timestamp:
+ *                   type: string
+ *                   format: date-time
+ *                 temperature:
+ *                   type: number
+ *                 humidity:
+ *                   type: number
+ *                 units:
+ *                   type: object
+ *       500:
+ *         description: Server error
+ */
 app.get('/api/realtime', async (req, res) => {
   const { latitude, longitude } = req.query;
   
@@ -69,7 +130,56 @@ app.get('/api/realtime', async (req, res) => {
   }
 });
 
-// Historical weather data from Open-Meteo
+/**
+ * @swagger
+ * /api/historical:
+ *   get:
+ *     summary: Get historical weather data
+ *     description: Fetch historical temperature and humidity data for a specific location and date range
+ *     parameters:
+ *       - in: query
+ *         name: latitude
+ *         schema:
+ *           type: string
+ *           default: "52.52"
+ *         description: Latitude coordinate (defaults to Berlin)
+ *       - in: query
+ *         name: longitude
+ *         schema:
+ *           type: string
+ *           default: "13.41"
+ *         description: Longitude coordinate (defaults to Berlin)
+ *       - in: query
+ *         name: start_date
+ *         schema:
+ *           type: string
+ *           format: date
+ *         required: true
+ *         description: Start date for historical data (YYYY-MM-DD)
+ *       - in: query
+ *         name: end_date
+ *         schema:
+ *           type: string
+ *           format: date
+ *         required: true
+ *         description: End date for historical data (YYYY-MM-DD)
+ *     responses:
+ *       200:
+ *         description: Successful response with historical weather data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                 units:
+ *                   type: object
+ *       400:
+ *         description: Bad request - missing required parameters
+ *       500:
+ *         description: Server error
+ */
 app.get("/api/historical", async (req, res) => {
   const { latitude, longitude, start_date, end_date } = req.query;
   
@@ -121,7 +231,54 @@ app.get("/api/historical", async (req, res) => {
   }
 });
 
-// Combined endpoint
+/**
+ * @swagger
+ * /api/combined:
+ *   get:
+ *     summary: Get combined real-time and historical weather data
+ *     description: Fetch both real-time and historical weather data in a single request
+ *     parameters:
+ *       - in: query
+ *         name: latitude
+ *         schema:
+ *           type: string
+ *           default: "52.52"
+ *         description: Latitude coordinate (defaults to Berlin)
+ *       - in: query
+ *         name: longitude
+ *         schema:
+ *           type: string
+ *           default: "13.41"
+ *         description: Longitude coordinate (defaults to Berlin)
+ *       - in: query
+ *         name: start_date
+ *         schema:
+ *           type: string
+ *           format: date
+ *         required: true
+ *         description: Start date for historical data (YYYY-MM-DD)
+ *       - in: query
+ *         name: end_date
+ *         schema:
+ *           type: string
+ *           format: date
+ *         required: true
+ *         description: End date for historical data (YYYY-MM-DD)
+ *     responses:
+ *       200:
+ *         description: Successful response with combined weather data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 realtime:
+ *                   type: object
+ *                 historical:
+ *                   type: object
+ *       500:
+ *         description: Server error
+ */
 app.get("/api/combined", async (req, res) => {
   try {
     const [realtime, historical] = await Promise.all([
@@ -141,7 +298,28 @@ app.get("/api/combined", async (req, res) => {
   }
 });
 
-// Health check endpoint
+/**
+ * @swagger
+ * /api/health:
+ *   get:
+ *     summary: Health check endpoint
+ *     description: Check if the API is operational
+ *     responses:
+ *       200:
+ *         description: API is operational
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 timestamp:
+ *                   type: string
+ *                   format: date-time
+ *                 services:
+ *                   type: object
+ */
 app.get("/api/health", (req, res) => {
   res.json({
     status: "operational",
@@ -156,6 +334,7 @@ app.get("/api/health", (req, res) => {
 // Start the server
 app.listen(port, () => {
   console.log(`🚀 Backend running at http://localhost:${port}`);
+  console.log(`📚 Swagger docs available at http://localhost:${port}/api-docs`);
   console.log(`Endpoints:
   - GET /api/realtime   : Real-time weather data
   - GET /api/historical : Historical weather data
