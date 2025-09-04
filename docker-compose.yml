@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  backend:
+    container_name: opcua-backend-container  # Add this line
+    build: ./opcua-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    networks:
+      - opcua-network
+
+  frontend:
+    container_name: opcua-frontend-container  # Add this line
+    build: ./opcua-dashboard
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - opcua-network
+
+networks:
+  opcua-network:
+    driver: bridge
