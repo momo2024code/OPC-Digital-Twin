@@ -19,7 +19,7 @@ services:
 
   frontend:
     container_name: opcua-frontend-container  # Add this line
-    build: ./opcua-dashboard
+    build: ./opcua-Frontend
     ports:
       - "80:80"
     depends_on:
@@ -30,4 +30,5 @@ services:
 
 networks:
   opcua-network:
+
     driver: bridge
