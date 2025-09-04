@@ -1,0 +1,266 @@
+/* Container styling */
+.app-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.main-card {
+  width: 100%;
+  max-width: 900px;
+}
+
+/* Card */
+.weather-card {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.section-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Date inputs */
+.date-inputs {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.date-label {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.date-picker {
+  margin-left: 0.5rem;
+  padding: 0.4rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* Button */
+.button-container {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.fetch-btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.fetch-btn:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.fetch-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Loading text */
+.loading-text {
+  text-align: center;
+  color: #666;
+  margin-top: 1rem;
+}
+
+/* Table */
+.table-container {
+  overflow-x: auto;
+}
+
+.historical-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.historical-table th,
+.historical-table td {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.historical-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+/* Pagination */
+.pagination {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pagination button {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-weight: 500;
+}
+/* Container styling */
+.app-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.main-card {
+  width: 100%;
+  max-width: 900px;
+}
+
+/* Card */
+.weather-card {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.section-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Date inputs */
+.date-inputs {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.date-label {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.date-picker {
+  margin-left: 0.5rem;
+  padding: 0.4rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* Button */
+.button-container {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.fetch-btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.fetch-btn:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.fetch-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Loading text */
+.loading-text {
+  text-align: center;
+  color: #666;
+  margin-top: 1rem;
+}
+
+/* Table */
+.table-container {
+  overflow-x: auto;
+}
+
+.historical-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.historical-table th,
+.historical-table td {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.historical-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+/* Pagination */
+.pagination {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pagination button {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-weight: 500;
+}

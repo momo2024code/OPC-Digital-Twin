@@ -1,0 +1,28 @@
+<div class="app-container">
+  <div class="main-card">
+    <!-- Real-time Weather Card -->
+    <section class="weather-card">
+      <h2 class="section-title">
+        🌤 Real-time Weather (Almería)
+      </h2>
+
+      <div *ngIf="loadingRealtime" class="loading-text">
+        <span class="spinner"></span> Loading real-time data...
+      </div>
+
+      <div *ngIf="!loadingRealtime && realtimeData" class="realtime-info">
+        <p>
+          <span class="icon">🌡️</span>
+          <strong>Temperature:</strong> {{ realtimeData.temperature }} {{ realtimeData.units?.temperature_2m }}
+        </p>
+        <p>
+          <span class="icon">💧</span>
+          <strong>Humidity:</strong> {{ realtimeData.humidity }} {{ realtimeData.units?.relative_humidity_2m }}
+        </p>
+        <p class="timestamp">
+          Updated: {{ realtimeData.timestamp | date:'medium' }}
+        </p>
+      </div>
+    </section>
+  </div>
+</div>
