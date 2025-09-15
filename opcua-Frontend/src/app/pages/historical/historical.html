@@ -1,106 +1,95 @@
 <div class="app-container">
-  <div class="main-card">
-    <section class="weather-card historical-card">
-      <h2 class="section-title">📅 Historical Weather Data</h2>
+    <div class="main-card">
+        <section class="weather-card historical-card">
+            <h2 class="section-title">📅 Historical Weather Data</h2>
 
-      <!-- Date inputs -->
-      <div class="date-inputs">
-        <label class="date-label">
-          Start Date:
-          <input
-            type="date"
-            [(ngModel)]="startDate"
-            name="startDate"
-            [max]="maxDate"
-            (change)="onStartDateChange()"
-            class="date-picker"
-            required
-          />
-        </label>
+            <!-- Date inputs -->
+            <div class="date-inputs">
+                <label class="date-label">
+                    Start Date:
+                    <input
+                            type="date"
+                            [(ngModel)]="startDate"
+                            name="startDate"
+                            [max]="maxDate"
+                            (change)="onStartDateChange()"
+                            class="date-picker"
+                            required
+                    />
+                </label>
 
-        <label class="date-label">
-          End Date:
-          <input
-            type="date"
-            [(ngModel)]="endDate"
-            name="endDate"
-            [max]="maxDate"
-            (change)="onEndDateChange()"
-            class="date-picker"
-            required
-          />
-        </label>
-      </div>
+                <label class="date-label">
+                    End Date:
+                    <input
+                            type="date"
+                            [(ngModel)]="endDate"
+                            name="endDate"
+                            [max]="maxDate"
+                            (change)="onEndDateChange()"
+                            class="date-picker"
+                            required
+                    />
+                </label>
+            </div>
 
-      <!-- Fetch button -->
-      <div class="button-container">
-        <button
-          (click)="fetchHistorical()"
-          class="fetch-btn"
-          [disabled]="loadingHistorical"
-        >
-          {{ loadingHistorical ? 'Fetching...' : 'Fetch Historical Data' }}
-        </button>
-      </div>
+            <!-- Loading -->
+            <div *ngIf="loadingHistorical" class="loading-text">
+                Loading historical data...
+            </div>
 
-      <!-- Loading -->
-      <div *ngIf="loadingHistorical" class="loading-text">
-        Loading historical data...
-      </div>
-
-      <!-- Table -->
-      <div *ngIf="!loadingHistorical && historicalData" class="table-container">
-        <table class="historical-table">
-          <thead>
-          <tr>
-            <th>Time</th>
-            <th>Temperature (°C)</th>
-            <th>Humidity (%)</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr
-            *ngFor="
+            <!-- Table -->
+            <div *ngIf="!loadingHistorical && historicalData" class="table-container">
+                <table class="historical-table">
+                    <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Temperature (°C)</th>
+                        <th>Humidity (%)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr
+                            *ngFor="
                 let temp of historicalData.data.temperature_2m
                   | slice:(currentPage-1)*pageSize:(currentPage)*pageSize;
                 let i = index
               "
-          >
-            <td>
-              {{
-                historicalData.data.time[(currentPage - 1) * pageSize + i]
-                  | date : 'short'
-              }}
-            </td>
-            <td>{{ temp }}</td>
-            <td>
-              {{
-                historicalData.data.relative_humidity_2m[
-                (currentPage - 1) * pageSize + i
-                  ] || 'N/A'
-              }}
-            </td>
-          </tr>
-          </tbody>
-        </table>
+                    >
+                        <td>
+                            {{
+                                historicalData.data.time[(currentPage - 1) * pageSize + i]
+                                    | date : 'short'
+                            }}
+                        </td>
+                        <td>{{ temp }}</td>
+                        <td>
+                            {{
+                                historicalData.data.relative_humidity_2m[
+                                (currentPage - 1) * pageSize + i
+                                    ] || 'N/A'
+                            }}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
 
-        <!-- Pagination -->
-        <div class="pagination">
-          <button
-            (click)="changePage(currentPage - 1)"
-            [disabled]="currentPage === 1"
-          >
-            ⬅ Prev
-          </button>
-          <span>Page {{ currentPage }} / {{ totalPages }}</span>
-          <button
-            (click)="changePage(currentPage + 1)"
-            [disabled]="currentPage === totalPages"
-          >
-            Next ➡
-          </button>
-        </div>
-      </div>
-    </section>
-  </div>
+                <!-- Pagination -->
+                <div class="pagination">
+                    <button
+                            (click)="changePage(currentPage - 1)"
+                            [disabled]="currentPage === 1"
+                    >
+                        ⬅ Prev
+                    </button>
+                    <span>Page {{ currentPage }} / {{ totalPages }}</span>
+                    <button
+                            (click)="changePage(currentPage + 1)"
+                            [disabled]="currentPage === totalPages"
+                    >
+                        Next ➡
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
 </div>
